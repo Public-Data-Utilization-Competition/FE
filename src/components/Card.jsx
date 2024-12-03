@@ -82,7 +82,10 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link }) => (
 
     {/* 중간: 텍스트 정보 */}
     <ContentWrapper>
+      <div> {/* To WG, 나 지금 VScode 이상해서 emmet 안먹고 들여쓰기 안됨 */}
       <Title>{title}</Title>
+      <Label>{tag}</Label>
+      </div>
       <Time>{time}</Time>
       <Location>{location}</Location>
       <SubInfo>

@@ -25,19 +25,19 @@ const Header = styled.h1`
   vertical-align: middle;
 `
 
-//temporary 더미 데이터
-const cardsData = [
-  {
-    logo: 'https://via.placeholder.com/60', // 로고 이미지 URL
-    title: '09시/A(진도)_상급-12개월차(영법교정)',
-    time: '월, 수, 금  09:00-09:50  2024.10.01 - 2024.10.31',
-    location: '광주시문화스포츠센터 (경기도 광주시 회안대로 891)', // 위치 정보 추가
-    tag: '수영',
-    price: '41,000',
-    capacity: '20',
-    link: '#',
-  },
-]
+// //temporary 더미 데이터
+// const cardsData = [
+//   {
+//     logo: 'https://via.placeholder.com/60', // 로고 이미지 URL
+//     title: '09시/A(진도)_상급-12개월차(영법교정)',
+//     time: '월, 수, 금  09:00-09:50  2024.10.01 - 2024.10.31',
+//     location: '광주시문화스포츠센터 (경기도 광주시 회안대로 891)', // 위치 정보 추가
+//     tag: '수영',
+//     price: '41,000',
+//     capacity: '20',
+//     link: '#',
+//   },
+// ]
 
 const App = () => {
   // API Response 저장할 상태
