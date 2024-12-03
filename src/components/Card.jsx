@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import Label from "./Label";
-import LinkButton from "./LinkButton";
+import React from 'react'
+import styled from 'styled-components'
+import Label from './Label'
+import LinkButton from './LinkButton'
 
 const CardWrapper = styled.div`
   display: flex;
@@ -13,10 +13,10 @@ const CardWrapper = styled.div`
   padding: 16px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px #CCCCCC;
+  box-shadow: 0 2px 8px #cccccc;
   margin-bottom: 16px;
   background-color: #fff;
-`;
+`
 
 const ImageWrapper = styled.div`
   display: flex;
@@ -25,53 +25,53 @@ const ImageWrapper = styled.div`
   max-height: 80px
   align-items: center;
   background-color: #f4f4f4;
-`;
+`
 
 const Image = styled.img`
   width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 8px;
-`;
+`
 
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 328px;
-  margin: 0 16px 0 20px
-`;
+  margin: 0 16px 0 20px;
+`
 
 const Title = styled.h3`
   font-size: 14px;
   font-weight: bold;
   margin: 0 0 4px 0;
-`;
+`
 
 const SubInfo = styled.p`
   font-size: 14px;
   font-weight: 700;
   color: #555;
   margin: 0;
-`;
+`
 
 const Time = styled.p`
   font-size: 13px;
   color: #555;
   margin: 0 0 4px 0;
-`;
+`
 
 const Location = styled.p`
   font-size: 13px;
   color: #777;
   margin: 0 0 4px 0;
-`;
+`
 
 const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const Card = ({ logo, title, time, location, tag, price, capacity, link }) => (
   <CardWrapper>
@@ -85,7 +85,9 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link }) => (
       <Title>{title}</Title>
       <Time>{time}</Time>
       <Location>{location}</Location>
-      <SubInfo>{price}원 | {capacity}명</SubInfo>
+      <SubInfo>
+        {price} | {capacity}
+      </SubInfo>
     </ContentWrapper>
 
     {/* 오른쪽: 신청 버튼 */}
@@ -93,6 +95,6 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link }) => (
       <LinkButton text="신청 링크" url={link} />
     </Footer>
   </CardWrapper>
-);
+)
 
-export default Card;
+export default Card
