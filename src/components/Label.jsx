@@ -1,15 +1,17 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
 const LabelWrapper = styled.span`
   background-color: #fff;
   font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 12px solid #CCCCCC;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border: 1px solid #cccccc;
+  border-radius: 12px;
   // font-weight: bold;
-  height: 18px;
-`;
+  // height: 18px;
+`
 
-const Label = ({ text }) => <LabelWrapper>{text}</LabelWrapper>;
+const Label = ({ children }) => <LabelWrapper>{children}</LabelWrapper>
 
-export default Label;
+export default Label

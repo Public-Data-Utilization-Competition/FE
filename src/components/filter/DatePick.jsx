@@ -49,20 +49,30 @@ const DateInput = styled.div`
   }
 `
 
-export const DatePick = () => {
+export const DatePick = ({ onDateChange }) => {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date)
+    onDateChange({ startDate: date, endDate }) // 부모 컴포넌트에 업데이트
+  }
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date)
+    onDateChange({ startDate, endDate: date }) // 부모 컴포넌트에 업데이트
+  }
 
   return (
     <Container>
       <Title>수강일</Title>
       <DatePickerRow>
         <DateInput>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" placeholderText="시작일" />
+          <DatePicker selected={startDate} onChange={handleStartDateChange} dateFormat="yyyy-MM-dd" placeholderText="시작일" />
         </DateInput>
         <Text>~</Text>
         <DateInput>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" placeholderText="마감일" />
+          <DatePicker selected={endDate} onChange={handleEndDateChange} dateFormat="yyyy-MM-dd" placeholderText="마감일" />
         </DateInput>
       </DatePickerRow>
     </Container>

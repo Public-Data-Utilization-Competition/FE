@@ -12,10 +12,20 @@ const Container = styled.div`
   border-radius: 8px 8px 0 0;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 `
+
+const HorizionLine = styled.div`
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #f2f2f7;
+  line-height: 0.1em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`
+
 const FilterHeader = styled.div`
   display: flex;
-  justify-content: space-between; /* 텍스트와 드롭다운을 양 끝에 배치 */
-  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: space-between;
+  align-items: center;
   margin: 16px 0;
   padding: 0 16px;
 `
@@ -33,17 +43,20 @@ const Dropdown = styled.select`
   }
 `
 
-const Text = styled.h3`
-  padding-left: 10px;
-`
+const FilterButton = styled.button`
+  display: block;
+  padding: 0;
+  color: #6f6f6f;
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
 
-const HorizionLine = styled.div`
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid #f2f2f7;
-  line-height: 0.1em;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  &:hover {
+    color: #5a4ebf;
+    text-decoration: none;
+  }
 `
 
 const ModalOverlay = styled.div`
@@ -67,22 +80,6 @@ const ModalContent = styled.div`
   z-index: 10000;
 `
 
-const FilterButton = styled.button`
-  display: block;
-  padding: 0;
-  color: #6f6f6f;
-  background-color: transparent;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    color: #5a4ebf;
-    text-decoration: none;
-  }
-`
-
 const SearchButton = styled.button`
   width: 560px;
   height: 54px;
@@ -101,40 +98,49 @@ const SearchButton = styled.button`
   }
 `
 
-const Filter = () => {
+const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [region, setRegion] = useState([])
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 })
+  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null })
 
-  const openModal = () => setIsModalOpen(true)
-  const serachlogic = () => setIsModalOpen(false)
-  const [sortOption, setSortOption] = useState('distance') // 기본값: 거리순
+  const applyFilters = () => {
+    const filters = {
+      sido: region.length > 0 ? region.join(',') : undefined,
+      min_price: priceRange.min,
+      max_price: priceRange.max,
+      progrm_begin_de: dateRange.startDate ? dateRange.startDate.toISOString().split('T')[0] : '2024-01-01',
+      progrm_end_de: dateRange.endDate ? dateRange.endDate.toISOString().split('T')[0] : '2025-12-31',
+    }
+    onFilterApply(filters) // 부모 컴포넌트(App)로 전달
+    setIsModalOpen(false)
+  }
 
   return (
     <>
-      {/* 헤더 바로 아래에 버튼 배치 */}
+      {/* 드롭다운과 필터 버튼 */}
       <FilterHeader>
         <Dropdown value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-          <option value="distance">거리순</option>
+          <option value="default">기본순</option>
           <option value="price">가격순</option>
-          <option value="popularity">인기순</option>
+          <option value="capacity">수강인원순</option>
         </Dropdown>
-        <FilterButton onClick={openModal}>원하는 조건 결과만 필터링하기</FilterButton>
+        <FilterButton onClick={() => setIsModalOpen(true)}>원하는 조건 결과만 필터링하기</FilterButton>
       </FilterHeader>
+
+      {/* 모달 */}
       {isModalOpen && (
         <>
-          {/* 모달 오버레이 */}
-          <ModalOverlay onClick={serachlogic} />
-          {/* 모달 내용 */}
+          <ModalOverlay onClick={() => setIsModalOpen(false)} />
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <Container>
-              <Text>필터</Text>
+              <Region onRegionChange={(regions) => setRegion(regions)} />
               <HorizionLine />
-              <Region />
+              <MultiRangeSlider min={0} max={1000000} onChange={(range) => setPriceRange(range)} />
               <HorizionLine />
-              <MultiRangeSlider min={0} max={1000} onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)} />
+              <DatePick onDateChange={(dates) => setDateRange(dates)} />
               <HorizionLine />
-              <DatePick />
-              <HorizionLine />
-              <SearchButton onClick={serachlogic}>적용하기</SearchButton>
+              <SearchButton onClick={applyFilters}>적용하기</SearchButton>
             </Container>
           </ModalContent>
         </>
@@ -143,4 +149,4 @@ const Filter = () => {
   )
 }
 
-export default Filter
+export default Filter // default로 내보내기

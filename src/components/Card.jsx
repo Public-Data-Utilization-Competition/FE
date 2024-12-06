@@ -42,6 +42,11 @@ const ContentWrapper = styled.div`
   margin: 0 16px 0 20px;
 `
 
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
+`
+
 const Title = styled.h3`
   font-size: 14px;
   font-weight: bold;
@@ -65,41 +70,44 @@ const Location = styled.p`
   font-size: 13px;
   color: #777;
   margin: 0 0 4px 0;
+  word-wrap: break-word; /* 긴 단어를 줄 바꿈 */
+  line-height: 1; /* 줄 간격 */
 `
 
 const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0; /* 크기 줄어들지 않음 */
+  width: 100px; /* 고정 너비 설정 */
 `
 
-const Card = ({ logo, title, time, location, tag, price, capacity, link }) => (
-  <CardWrapper>
-    {/* 왼쪽: 이미지 */}
-    <ImageWrapper>
-      <Image src={logo} alt="logo" />
-    </ImageWrapper>
+const Card = ({ logo, title, time, location, tag, price, capacity, days, link }) => (
+  console.log('capacity:', capacity),
+  (
+    <CardWrapper>
+      {/* 왼쪽: 이미지 */}
+      <ImageWrapper>
+        <Image src={logo || '/default-logo.png'} alt="logo" />
+      </ImageWrapper>
 
-    {/* 중간: 텍스트 정보 */}
-    <ContentWrapper>
-      <div style={{ height: '20px' }}>
-        {' '}
-        {/* To WG, 나 지금 VScode 이상해서 emmet 안먹고 들여쓰기 안됨 */}
-        <Title>{title}</Title>
-        <Label>{tag}</Label>
-      </div>
-      <Time>{time}</Time>
-      <Location>{location}</Location>
-      <SubInfo>
-        {price} | {capacity}
-      </SubInfo>
-    </ContentWrapper>
+      {/* 중간: 텍스트 정보 */}
+      <ContentWrapper>
+        <TitleWrapper>
+          <Title>{title || '제목 없음'}</Title>
+          <Label>{tag || '카테고리 없음'}</Label>
+        </TitleWrapper>
+        <Time>{time || '시간 정보 없음'}</Time>
+        <Location>{location || '위치 정보 없음'}</Location>
+        <SubInfo>
+          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {days}
+        </SubInfo>
+      </ContentWrapper>
 
-    {/* 오른쪽: 신청 버튼 */}
-    <Footer>
-      <LinkButton text="신청 링크" url={link} />
-    </Footer>
-  </CardWrapper>
+      {/* 오른쪽: 신청 버튼 */}
+      <Footer>{link ? <LinkButton text="신청 링크" url={link} /> : <span>링크 없음</span>}</Footer>
+    </CardWrapper>
+  )
 )
 
 export default Card
