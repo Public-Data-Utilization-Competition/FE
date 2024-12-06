@@ -53,6 +53,18 @@ const App = () => {
     setFilteredData(allResults) // 기본값: 전체 데이터를 필터링 데이터로 설정
   }
 
+  // Filter data based on filter options
+  const handleFilterApply = (filters) => {
+    let data = [...allData]
+    if (filters.sido) data = data.filter((item) => filters.sido.includes(item.region))
+    if (filters.min_price) data = data.filter((item) => item.progrm_prc >= filters.min_price)
+    if (filters.max_price) data = data.filter((item) => item.progrm_prc <= filters.max_price)
+    if (filters.progrm_begin_de) data = data.filter((item) => new Date(item.progrm_begin_de) >= new Date(filters.progrm_begin_de))
+    if (filters.progrm_end_de) data = data.filter((item) => new Date(item.progrm_end_de) <= new Date(filters.progrm_end_de))
+    setFilteredData(data) // 필터링된 데이터를 상태에 업데이트
+    setCurrentPage(1) // 필터링 후 페이지 초기화
+  }
+
   // Filter data based on search input
   const handleSearch = (searchText) => {
     const lowerCaseSearchText = searchText.toLowerCase() // 대소문자 무시
