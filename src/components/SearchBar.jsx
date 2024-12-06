@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 const SearchBarContainer = styled.div`
   display: flex;
@@ -11,15 +11,15 @@ const SearchBarContainer = styled.div`
   padding: 0px 20px;
   max-width: 560px;
   height: 40px;
-`;
+`
 
 const SearchInput = styled.input`
   flex: 1;
   border: none;
   outline: none;
   font-size: 14px;
-  color: #6F6F6F;
-`;
+  color: #6f6f6f;
+`
 
 const SearchButton = styled.button`
   background: none;
@@ -31,19 +31,55 @@ const SearchButton = styled.button`
 
   i {
     font-size: 20px;
-    color: #CCCCCC;
+    color: #cccccc;
   }
-`;
+`
 
-const SearchBar = () => {
+const ClearButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 24px;
+  width: 24px;
+
+  i {
+    font-size: 20px;
+    color: #ff0000;
+  }
+`
+
+const SearchBar = ({ onSearch }) => {
+  const [searchText, setSearchText] = useState('')
+
+  const handleSearch = () => {
+    onSearch(searchText)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
+  const clearSearch = () => {
+    setSearchText('') // 검색창 비우기
+    onSearch('') // 검색어 초기화
+  }
+
   return (
     <SearchBarContainer>
-      <SearchInput type="text" placeholder="관심있는 스포츠 강좌를 검색해보세요" />
-      <SearchButton>
-        <i className="fas fa-search"></i> {/* FontAwesome 아이콘 */}
+      <SearchInput type="text" value={searchText} placeholder="관심있는 스포츠 강좌를 검색해보세요" onChange={(e) => setSearchText(e.target.value)} onKeyDown={handleKeyDown} />
+      {searchText && (
+        <ClearButton onClick={clearSearch}>
+          <i className="fas fa-times"></i> {/* 초기화 버튼 */}
+        </ClearButton>
+      )}
+      <SearchButton onClick={handleSearch}>
+        <i className="fas fa-search"></i>
       </SearchButton>
     </SearchBarContainer>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar

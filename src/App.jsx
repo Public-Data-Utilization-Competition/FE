@@ -41,7 +41,6 @@ const App = () => {
     while (hasNextPage) {
       try {
         const response = await axios.get(`https://dev.hufsthon.site/api/programs/?page=${page}`)
-        console.log(response.data)
         allResults = [...allResults, ...response.data.results]
         hasNextPage = !!response.data.next
         page += 1
@@ -54,16 +53,18 @@ const App = () => {
     setFilteredData(allResults) // 기본값: 전체 데이터를 필터링 데이터로 설정
   }
 
-  // Filter data based on filter options
-  const handleFilterApply = (filters) => {
-    let data = [...allData]
-    if (filters.sido) data = data.filter((item) => filters.sido.includes(item.region))
-    if (filters.min_price) data = data.filter((item) => item.progrm_prc >= filters.min_price)
-    if (filters.max_price) data = data.filter((item) => item.progrm_prc <= filters.max_price)
-    if (filters.progrm_begin_de) data = data.filter((item) => new Date(item.progrm_begin_de) >= new Date(filters.progrm_begin_de))
-    if (filters.progrm_end_de) data = data.filter((item) => new Date(item.progrm_end_de) <= new Date(filters.progrm_end_de))
-    setFilteredData(data)
-    setCurrentPage(1) // 필터링 후 페이지 초기화
+  // Filter data based on search input
+  const handleSearch = (searchText) => {
+    const lowerCaseSearchText = searchText.toLowerCase() // 대소문자 무시
+    const searchedData = allData.filter(
+      (item) =>
+        item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) || // 프로그램 이름
+        item.category_name.toLowerCase().includes(lowerCaseSearchText) || // 카테고리 이름
+        item.facility_name.toLowerCase().includes(lowerCaseSearchText) || // 시설 이름
+        item.region.toLowerCase().includes(lowerCaseSearchText), // 시설 이름
+    )
+    setFilteredData(searchedData)
+    setCurrentPage(1) // 검색 후 페이지 초기화
   }
 
   // Sort data based on the selected sort option
@@ -98,8 +99,8 @@ const App = () => {
   return (
     <AppWrapper>
       <Header>한번에 찾는 전국 체육시설 스포츠강좌 리스트</Header>
-      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={handleFilterApply} />
-      <SearchBar />
+      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={(filters) => handleFilterApply(filters)} />
+      <SearchBar onSearch={handleSearch} /> {/* 검색 기능 추가 */}
       {getPaginatedData().map((item, index) => (
         <Card
           key={index}
@@ -109,7 +110,7 @@ const App = () => {
           tag={item.category_name}
           price={`${item.progrm_prc.toLocaleString()}원`}
           capacity={item.progrm_rcrit_nmpr_co > 0 ? `${item.progrm_rcrit_nmpr_co}` : '마감'}
-          location={`${item.facility_name}(${item.facility_address})`}
+          location={`${item.region}| ${item.facility_name}(${item.facility_address})`}
           link={item.hmpg_url}
           target={item.progrm_trget_nm}
         />
