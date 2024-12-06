@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
@@ -104,6 +104,12 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 })
   const [dateRange, setDateRange] = useState({ startDate: null, endDate: null })
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setPriceRange({ min: 0, max: 1000000 }) // 슬라이더 초기값 재설정
+    }
+  }, [isModalOpen])
+
   const applyFilters = () => {
     const filters = {
       sido: region.length > 0 ? region.join(',') : undefined,
@@ -121,8 +127,8 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
       {/* 드롭다운과 필터 버튼 */}
       <FilterHeader>
         <Dropdown value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-          <option value="default">기본순</option>
-          <option value="price">가격순</option>
+          <option value="default">기본</option>
+          <option value="price">낮은가격순</option>
           <option value="capacity">수강인원순</option>
         </Dropdown>
         <FilterButton onClick={() => setIsModalOpen(true)}>원하는 조건 결과만 필터링하기</FilterButton>
@@ -136,7 +142,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
             <Container>
               <Region onRegionChange={(regions) => setRegion(regions)} />
               <HorizionLine />
-              <MultiRangeSlider min={0} max={1000000} onChange={(range) => setPriceRange(range)} />
+              <MultiRangeSlider min={0} max={1000000} value={{ min: priceRange.min, max: priceRange.max }} onChange={(range) => setPriceRange(range)} />
               <HorizionLine />
               <DatePick onDateChange={(dates) => setDateRange(dates)} />
               <HorizionLine />
