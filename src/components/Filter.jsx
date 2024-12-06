@@ -129,7 +129,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
         <Dropdown value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
           <option value="default">기본</option>
           <option value="price">낮은가격순</option>
-          <option value="capacity">수강인원순</option>
+          <option value="capacity">모집인원순</option>
         </Dropdown>
         <FilterButton onClick={() => setIsModalOpen(true)}>원하는 조건 결과만 필터링하기</FilterButton>
       </FilterHeader>
