@@ -105,13 +105,13 @@ const App = () => {
           key={index}
           logo={item.region_image}
           title={item.progrm_nm}
-          time={`${item.days_display} ${item.time_range}`}
+          time={`${item.days_display} | ${item.time_range} | ${`${item.progrm_begin_de}~${item.progrm_end_de}`}`}
           tag={item.category_name}
           price={`${item.progrm_prc.toLocaleString()}원`}
           capacity={item.progrm_rcrit_nmpr_co > 0 ? `${item.progrm_rcrit_nmpr_co}` : '마감'}
           location={`${item.facility_name}(${item.facility_address})`}
-          days={item.days_display}
           link={item.hmpg_url}
+          target={item.progrm_trget_nm}
         />
       ))}
       <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredData.length / itemsPerPage)} onPageChange={handlePageChange} />

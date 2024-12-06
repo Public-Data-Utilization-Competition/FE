@@ -59,11 +59,16 @@ const SubInfo = styled.p`
   color: #555;
   margin: 0;
 `
-
-const Time = styled.p`
-  font-size: 13px;
+const Time = styled.p.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOverflow',
+})`
+  font-size: ${(props) => (props.isOverflow ? '11px' : '13px')};
   color: #555;
   margin: 0 0 4px 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Location = styled.p`
@@ -82,9 +87,10 @@ const Footer = styled.div`
   width: 100px; /* 고정 너비 설정 */
 `
 
-const Card = ({ logo, title, time, location, tag, price, capacity, days, link }) => (
-  console.log('capacity:', capacity),
-  (
+const Card = ({ logo, title, time, location, tag, price, capacity, link, target }) => {
+  const isTimeOverflow = time.length > 15 // 글자 길이가 15 이상인 경우 overflow로 간주
+
+  return (
     <CardWrapper>
       {/* 왼쪽: 이미지 */}
       <ImageWrapper>
@@ -97,10 +103,10 @@ const Card = ({ logo, title, time, location, tag, price, capacity, days, link })
           <Title>{title || '제목 없음'}</Title>
           <Label>{tag || '카테고리 없음'}</Label>
         </TitleWrapper>
-        <Time>{time || '시간 정보 없음'}</Time>
+        <Time isOverflow={isTimeOverflow}>{time || '시간 정보 없음'}</Time>
         <Location>{location || '위치 정보 없음'}</Location>
         <SubInfo>
-          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {days}
+          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target}
         </SubInfo>
       </ContentWrapper>
 
@@ -108,6 +114,6 @@ const Card = ({ logo, title, time, location, tag, price, capacity, days, link })
       <Footer>{link ? <LinkButton text="신청 링크" url={link} /> : <span>링크 없음</span>}</Footer>
     </CardWrapper>
   )
-)
+}
 
 export default Card

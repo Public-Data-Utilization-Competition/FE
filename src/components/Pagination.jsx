@@ -12,8 +12,8 @@ const PageButton = styled.button`
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
-  background-color: ${(props) => (props.active ? '#3e3691' : '#f2f2f2')};
-  color: ${(props) => (props.active ? '#fff' : '#333')};
+  background-color: ${(props) => (props.$active ? '#3e3691' : '#f2f2f2')};
+  color: ${(props) => (props.$active ? '#fff' : '#333')};
   cursor: pointer;
 
   &:hover {
@@ -25,7 +25,7 @@ const PageButton = styled.button`
 const Pagination = ({ currentPage, totalPages, onPageChange }) => (
   <PaginationWrapper>
     {Array.from({ length: totalPages }, (_, index) => (
-      <PageButton key={index + 1} active={currentPage === index + 1} onClick={() => onPageChange(index + 1)}>
+      <PageButton key={index + 1} $active={currentPage === index + 1} onClick={() => onPageChange(index + 1)}>
         {index + 1}
       </PageButton>
     ))}
