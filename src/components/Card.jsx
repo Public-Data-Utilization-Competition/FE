@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Label from './Label'
 import LinkButton from './LinkButton'
+import avartarIcon from '../images/avatar.png'
 
 const CardWrapper = styled.div`
   display: flex;
@@ -55,9 +56,13 @@ const Title = styled.h3`
 
 const SubInfo = styled.p`
   font-size: 14px;
-  font-weight: 700;
-  color: #555;
+  // font-weight: 700;
+  // color: #555;
   margin: 0;
+
+  span.price {
+    font-weight: bold; /* price 부분만 볼드체 */
+  }
 `
 const Time = styled.p.withConfig({
   shouldForwardProp: (prop) => prop !== 'isOverflow',
@@ -106,7 +111,8 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link, target 
         <Time isOverflow={isTimeOverflow}>{time || '시간 정보 없음'}</Time>
         <Location>{location || '위치 정보 없음'}</Location>
         <SubInfo>
-          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target == '공백' ? ' ' : target}
+          <span className="price">{price || '가격 미정'}</span> <img src={avartarIcon} style={{ margin: '0px 2.5px' }} />
+          {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target == '공백' ? ' ' : target}
         </SubInfo>
       </ContentWrapper>
 
