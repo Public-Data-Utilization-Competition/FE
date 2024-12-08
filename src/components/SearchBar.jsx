@@ -32,7 +32,13 @@ const SearchButton = styled.button`
   i {
     font-size: 20px;
     color: #cccccc;
+
+    &:hover {
+      color: #5a4ebf;
+    }
   }
+
+  
 `
 
 const ClearButton = styled.button`
@@ -45,7 +51,7 @@ const ClearButton = styled.button`
 
   i {
     font-size: 20px;
-    color: #ff0000;
+    color: #CA2525;
   }
 `
 

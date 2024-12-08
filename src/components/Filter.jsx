@@ -3,6 +3,8 @@ import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import filterResetIcon from '../images/filter_reset.png'
 import filterOpenIcon from '../images/filter_button.png'
 
@@ -162,7 +164,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
           <option value="capacity">모집인원순</option>
         </Dropdown>
         <FilterButton onClick={() => setIsModalOpen(true)}>
-          원하는 조건 결과만 필터링하기 <img src={filterOpenIcon} alt="filter_open_icon" width={26} />
+          원하는 조건 결과만 필터링하기 <FontAwesomeIcon icon={faFilter} style={{color: "#6F6F6F"}} />
         </FilterButton>
       </FilterHeader>
 

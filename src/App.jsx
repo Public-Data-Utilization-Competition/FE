@@ -11,7 +11,7 @@ const AppWrapper = styled.div`
   box-sizing: border-box;
   max-width: 600px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 14px;
 `
 
 const Header = styled.h1`
@@ -124,9 +124,9 @@ const App = () => {
         <HeaderImage src={mainIcon} alt="main" />
         한번에 찾는 전국 체육시설 스포츠강좌 리스트
       </Header>
-      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={handleFilterApply} />
-      <SearchBar onSearch={handleSearch} /> {/* 검색 기능 추가 */}
-      {getPaginatedData().map((item) => (
+      <SearchBar onSearch={handleSearch} /> 
+      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={(filters) => handleFilterApply(filters)} />
+      {getPaginatedData().map((item, index) => (
         <Card
           key={item.id}
           logo={item.region_image}

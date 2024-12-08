@@ -2,16 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import Label from './Label'
 import LinkButton from './LinkButton'
-import avartarIcon from '../images/avatar.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  // justify-content: space-between;
+  justify-content: space-between;
   align-items: flex-end;
   max-width: 528px;
-  max-height: 80px;
-  padding: 16px;
+  min-height: 80px;
+  padding: 16px 12px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px #cccccc;
@@ -22,15 +23,16 @@ const CardWrapper = styled.div`
 const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
-  max-width: 80px;
-  max-height: 80px
   align-items: center;
+  max-width: 75px;
+  max-height: 75px
   background-color: #f4f4f4;
+  border-radius: 8px;
 `
 
 const Image = styled.img`
-  width: 80px;
-  height: 80px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: cover;
   border-radius: 8px;
 `
@@ -39,8 +41,8 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 328px;
-  margin: 0 16px 0 20px;
+  width: 370px;
+  margin-left: 8px;
 `
 
 const TitleWrapper = styled.div`
@@ -67,7 +69,7 @@ const SubInfo = styled.p`
 const Time = styled.p.withConfig({
   shouldForwardProp: (prop) => prop !== 'isOverflow',
 })`
-  font-size: ${(props) => (props.isOverflow ? '11px' : '13px')};
+  font-size: 13px;
   color: #555;
   margin: 0 0 4px 0;
   line-height: 1.2;
@@ -88,6 +90,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0px;
   flex-shrink: 0; /* 크기 줄어들지 않음 */
   width: 100px; /* 고정 너비 설정 */
 `
@@ -111,13 +114,13 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link, target 
         <Time isOverflow={isTimeOverflow}>{time || '시간 정보 없음'}</Time>
         <Location>{location || '위치 정보 없음'}</Location>
         <SubInfo>
-          <span className="price">{price || '가격 미정'}</span> <img src={avartarIcon} style={{ margin: '0px 2.5px' }} />
+          <span className="price">{price || '가격 미정'}</span> <FontAwesomeIcon icon={faUser} style={{ margin: "0 1px 0 5px", height: "13px" }} />
           {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target == '공백' ? ' ' : target}
         </SubInfo>
       </ContentWrapper>
 
       {/* 오른쪽: 신청 버튼 */}
-      <Footer>{link ? <LinkButton text="신청 링크" url={link} /> : <span>링크 없음</span>}</Footer>
+      <LinkButton text="신청링크" url={link} />
     </CardWrapper>
   )
 }
