@@ -34,7 +34,8 @@ const HeaderImage = styled.img`
 
 const App = () => {
   const [allData, setAllData] = useState([]) // 전체 데이터
-  const [filteredData, setFilteredData] = useState([]) // 필터링된 데이터
+  const [searchData, setSearchData] = useState([]) // 검색된 데이터
+  const [filteredData, setFilteredData] = useState([]) // 최종 필터링된 데이터
   const [sortOption, setSortOption] = useState('default') // 정렬 옵션
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지
   const itemsPerPage = 10 // 페이지당 아이템 수
@@ -57,12 +58,13 @@ const App = () => {
       }
     }
     setAllData(allResults)
-    setFilteredData(allResults) // 기본값: 전체 데이터를 필터링 데이터로 설정
+    setSearchData(allResults) // 검색 데이터 초기화
+    setFilteredData(allResults) // 필터링 데이터 초기화
   }
 
   // Filter data based on filter options
   const handleFilterApply = (filters) => {
-    let data = [...allData]
+    let data = [...searchData] // 검색된 데이터에서 필터링
     if (filters.sido) data = data.filter((item) => filters.sido.includes(item.region))
     if (filters.min_price) data = data.filter((item) => item.progrm_prc >= filters.min_price)
     if (filters.max_price) data = data.filter((item) => item.progrm_prc <= filters.max_price)
@@ -80,9 +82,10 @@ const App = () => {
         item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) || // 프로그램 이름
         item.category_name.toLowerCase().includes(lowerCaseSearchText) || // 카테고리 이름
         item.facility_name.toLowerCase().includes(lowerCaseSearchText) || // 시설 이름
-        item.region.toLowerCase().includes(lowerCaseSearchText), // 시설 이름
+        item.region.toLowerCase().includes(lowerCaseSearchText), // 지역 이름
     )
-    setFilteredData(searchedData)
+    setSearchData(searchedData) // 검색된 데이터를 상태에 업데이트
+    setFilteredData(searchedData) // 필터링된 데이터도 업데이트
     setCurrentPage(1) // 검색 후 페이지 초기화
   }
 
@@ -121,9 +124,9 @@ const App = () => {
         <HeaderImage src={mainIcon} alt="main" />
         한번에 찾는 전국 체육시설 스포츠강좌 리스트
       </Header>
-      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={(filters) => handleFilterApply(filters)} />
+      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={handleFilterApply} />
       <SearchBar onSearch={handleSearch} /> {/* 검색 기능 추가 */}
-      {getPaginatedData().map((item, index) => (
+      {getPaginatedData().map((item) => (
         <Card
           key={item.id}
           logo={item.region_image}
@@ -132,7 +135,7 @@ const App = () => {
           tag={item.category_name}
           price={`${item.progrm_prc.toLocaleString()}원`}
           capacity={item.progrm_rcrit_nmpr_co > 0 ? `${item.progrm_rcrit_nmpr_co}` : '마감'}
-          location={`${item.region}| ${item.facility_name}(${item.facility_address})`}
+          location={`${item.facility_name} (${item.facility_address})`}
           link={item.hmpg_url}
           target={item.progrm_trget_nm}
         />

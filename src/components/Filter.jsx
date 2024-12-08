@@ -4,6 +4,7 @@ import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
 import filterResetIcon from '../images/filter_reset.png'
+import filterOpenIcon from '../images/filter_button.png'
 
 const Container = styled.div`
   display: flex;
@@ -65,7 +66,9 @@ const Dropdown = styled.select`
 `
 
 const FilterButton = styled.button`
-  display: block;
+  display: inline-flex; // Flexbox 사용
+  align-items: center; // 세로 정렬을 중앙에 맞춤
+  gap: 8px; // 텍스트와 이미지 사이 간격
   padding: 0;
   color: #6f6f6f;
   background-color: transparent;
@@ -158,7 +161,9 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
           <option value="price">낮은가격순</option>
           <option value="capacity">모집인원순</option>
         </Dropdown>
-        <FilterButton onClick={() => setIsModalOpen(true)}>원하는 조건 결과만 필터링하기</FilterButton>
+        <FilterButton onClick={() => setIsModalOpen(true)}>
+          원하는 조건 결과만 필터링하기 <img src={filterOpenIcon} alt="filter_open_icon" width={26} />
+        </FilterButton>
       </FilterHeader>
 
       {isModalOpen && (
