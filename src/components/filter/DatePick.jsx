@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DatePicker from 'react-datepicker'
 import styled from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -49,9 +49,14 @@ const DateInput = styled.div`
   }
 `
 
-export const DatePick = ({ onDateChange }) => {
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+export const DatePick = ({ onDateChange, selectedDates }) => {
+  const [startDate, setStartDate] = useState(selectedDates.startDate)
+  const [endDate, setEndDate] = useState(selectedDates.endDate)
+
+  useEffect(() => {
+    setStartDate(selectedDates.startDate)
+    setEndDate(selectedDates.endDate)
+  }, [selectedDates])
 
   const handleStartDateChange = (date) => {
     setStartDate(date)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -34,10 +34,14 @@ const RegionCard = styled.button`
   width: fit-content;
 `
 
-const regions = ['서울특별시', '인천', '경기도', '강원도', '충청북도', '충청남도', '부산', '대구', '경상북도', '경상남도']
+const regions = ['서울특별시', '인천광역시', '경기도', '강원도', '충청북도', '충청남도', '부산광역시', '대구광역시', '경상북도', '경상남도']
 
-export const Region = ({ onRegionChange }) => {
-  const [activeRegions, setActiveRegions] = useState([]) // 활성화된 버튼 상태 (다중 선택)
+export const Region = ({ onRegionChange, selectedRegions }) => {
+  const [activeRegions, setActiveRegions] = useState(selectedRegions) // 활성화된 버튼 상태 (다중 선택)
+
+  useEffect(() => {
+    setActiveRegions(selectedRegions)
+  }, [selectedRegions])
 
   const onClick = (region) => {
     const updatedRegions = activeRegions.includes(region)

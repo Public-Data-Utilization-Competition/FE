@@ -3,6 +3,7 @@ import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
+import filterResetIcon from '../images/filter_reset.png'
 
 const Container = styled.div`
   display: flex;
@@ -11,6 +12,26 @@ const Container = styled.div`
   background-color: white;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+`
+
+const ContainerHeader = styled.div`
+  display: flex;
+`
+const Title = styled.h3`
+  margin-left: 10px;
+`
+
+const ResetButton = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #6f6f6f;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto;
+
+  &:hover {
+    color: #5a4ebf;
+  }
 `
 
 const HorizionLine = styled.div`
@@ -106,9 +127,16 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
 
   useEffect(() => {
     if (isModalOpen) {
-      setPriceRange({ min: 0, max: 1000000 }) // 슬라이더 초기값 재설정
+      setPriceRange({ min: 0, max: 1000000 })
     }
   }, [isModalOpen])
+
+  const resetFilters = () => {
+    console.log('함수 실행')
+    setRegion([]) // 선택된 지역 초기화
+    setPriceRange({ min: 0, max: 1000000 }) // 선택된 가격 범위 초기화
+    setDateRange({ startDate: null, endDate: null }) // 선택된 날짜 범위 초기화
+  }
 
   const applyFilters = () => {
     const filters = {
@@ -118,13 +146,12 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
       progrm_begin_de: dateRange.startDate ? dateRange.startDate.toISOString().split('T')[0] : '2024-01-01',
       progrm_end_de: dateRange.endDate ? dateRange.endDate.toISOString().split('T')[0] : '2025-12-31',
     }
-    onFilterApply(filters) // 부모 컴포넌트(App)로 전달
+    onFilterApply(filters)
     setIsModalOpen(false)
   }
 
   return (
     <>
-      {/* 드롭다운과 필터 버튼 */}
       <FilterHeader>
         <Dropdown value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
           <option value="default">기본</option>
@@ -134,17 +161,23 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
         <FilterButton onClick={() => setIsModalOpen(true)}>원하는 조건 결과만 필터링하기</FilterButton>
       </FilterHeader>
 
-      {/* 모달 */}
       {isModalOpen && (
         <>
           <ModalOverlay onClick={() => setIsModalOpen(false)} />
           <ModalContent onClick={(e) => e.stopPropagation()}>
             <Container>
-              <Region onRegionChange={(regions) => setRegion(regions)} />
+              <ContainerHeader>
+                <Title>필터</Title>
+                <ResetButton onClick={resetFilters}>
+                  <img src={filterResetIcon} alt="Reset" />
+                </ResetButton>
+              </ContainerHeader>
+              <HorizionLine />
+              <Region onRegionChange={(regions) => setRegion(regions)} selectedRegions={region} />
               <HorizionLine />
               <MultiRangeSlider min={0} max={1000000} value={{ min: priceRange.min, max: priceRange.max }} onChange={(range) => setPriceRange(range)} />
               <HorizionLine />
-              <DatePick onDateChange={(dates) => setDateRange(dates)} />
+              <DatePick onDateChange={(dates) => setDateRange(dates)} selectedDates={dateRange} />
               <HorizionLine />
               <SearchButton onClick={applyFilters}>적용하기</SearchButton>
             </Container>
@@ -155,4 +188,4 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
   )
 }
 
-export default Filter // default로 내보내기
+export default Filter

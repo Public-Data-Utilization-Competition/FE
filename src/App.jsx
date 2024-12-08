@@ -5,6 +5,7 @@ import Card from './components/Card'
 import Pagination from './components/Pagination'
 import axios from 'axios'
 import SearchBar from './components/SearchBar'
+import mainIcon from './images/main_logo.png'
 
 const AppWrapper = styled.div`
   box-sizing: border-box;
@@ -22,6 +23,12 @@ const Header = styled.h1`
   height: 57px;
   margin: 0;
   line-height: 57px;
+  vertical-align: middle;
+`
+
+const HeaderImage = styled.img`
+  width: 40px;
+  height: 40px;
   vertical-align: middle;
 `
 
@@ -110,12 +117,15 @@ const App = () => {
 
   return (
     <AppWrapper>
-      <Header>한번에 찾는 전국 체육시설 스포츠강좌 리스트</Header>
+      <Header>
+        <HeaderImage src={mainIcon} alt="main" />
+        한번에 찾는 전국 체육시설 스포츠강좌 리스트
+      </Header>
       <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={(filters) => handleFilterApply(filters)} />
       <SearchBar onSearch={handleSearch} /> {/* 검색 기능 추가 */}
       {getPaginatedData().map((item, index) => (
         <Card
-          key={index}
+          key={item.id}
           logo={item.region_image}
           title={item.progrm_nm}
           time={`${item.days_display} | ${item.time_range} | ${`${item.progrm_begin_de}~${item.progrm_end_de}`}`}

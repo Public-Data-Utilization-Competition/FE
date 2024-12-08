@@ -106,7 +106,7 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link, target 
         <Time isOverflow={isTimeOverflow}>{time || '시간 정보 없음'}</Time>
         <Location>{location || '위치 정보 없음'}</Location>
         <SubInfo>
-          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target}
+          {price || '가격 미정'} | {Number(capacity) > 0 ? `${capacity}명` : '마감'} | {target == '공백' ? ' ' : target}
         </SubInfo>
       </ContentWrapper>
 
