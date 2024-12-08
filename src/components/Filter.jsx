@@ -3,8 +3,8 @@ import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import filterResetIcon from '../images/filter_reset.png'
 import filterOpenIcon from '../images/filter_button.png'
 
@@ -124,7 +124,7 @@ const SearchButton = styled.button`
   }
 `
 
-const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
+const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [region, setRegion] = useState([])
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 })
@@ -135,6 +135,16 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
       setPriceRange({ min: 0, max: 1000000 })
     }
   }, [isModalOpen])
+
+  useEffect(() => {
+    setResetFilterUI(() => resetUI) // resetUI를 부모로 전달
+  }, [setResetFilterUI])
+
+  const resetUI = () => {
+    setRegion([])
+    setPriceRange({ min: 0, max: 1000000 })
+    setDateRange({ startDate: null, endDate: null })
+  }
 
   const resetFilters = () => {
     console.log('함수 실행')
@@ -164,7 +174,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply }) => {
           <option value="capacity">모집인원순</option>
         </Dropdown>
         <FilterButton onClick={() => setIsModalOpen(true)}>
-          원하는 조건 결과만 필터링하기 <FontAwesomeIcon icon={faFilter} style={{color: "#6F6F6F"}} />
+          원하는 조건 결과만 필터링하기 <FontAwesomeIcon icon={faFilter} style={{ color: '#6F6F6F' }} />
         </FilterButton>
       </FilterHeader>
 

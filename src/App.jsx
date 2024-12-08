@@ -39,6 +39,7 @@ const App = () => {
   const [sortOption, setSortOption] = useState('default') // 정렬 옵션
   const [currentPage, setCurrentPage] = useState(1) // 현재 페이지
   const itemsPerPage = 10 // 페이지당 아이템 수
+  const [resetFilterUI, setResetFilterUI] = useState(null)
 
   // Fetch all data
   const fetchAllData = async () => {
@@ -124,8 +125,13 @@ const App = () => {
         <HeaderImage src={mainIcon} alt="main" />
         한번에 찾는 전국 체육시설 스포츠강좌 리스트
       </Header>
-      <SearchBar onSearch={handleSearch} /> 
-      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={(filters) => handleFilterApply(filters)} />
+      <SearchBar onSearch={handleSearch} resetFilterUI={resetFilterUI} />
+      <Filter
+        sortOption={sortOption}
+        setSortOption={setSortOption}
+        onFilterApply={(filters) => handleFilterApply(filters)}
+        setResetFilterUI={setResetFilterUI} // Set the resetFilterUI function
+      />
       {getPaginatedData().map((item, index) => (
         <Card
           key={item.id}

@@ -37,8 +37,6 @@ const SearchButton = styled.button`
       color: #5a4ebf;
     }
   }
-
-  
 `
 
 const ClearButton = styled.button`
@@ -51,20 +49,22 @@ const ClearButton = styled.button`
 
   i {
     font-size: 20px;
-    color: #CA2525;
+    color: #ca2525;
   }
 `
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, resetFilterUI }) => {
   const [searchText, setSearchText] = useState('')
 
   const handleSearch = () => {
     onSearch(searchText)
+    if (resetFilterUI) resetFilterUI() // Call the reset function if available
   }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch()
+      if (resetFilterUI) resetFilterUI() // 필터 모달 UI 초기화
     }
   }
 
