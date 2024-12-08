@@ -3,8 +3,8 @@ import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import filterResetIcon from '../images/filter_reset.png'
 import filterOpenIcon from '../images/filter_button.png'
 
@@ -186,7 +186,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) 
               <ContainerHeader>
                 <Title>필터</Title>
                 <ResetButton onClick={resetFilters}>
-                  <img src={filterResetIcon} alt="Reset" />
+                <FontAwesomeIcon icon={faRotateRight} style={{width: "20px", height: "20px", paddingRight: "6px"}} />
                 </ResetButton>
               </ContainerHeader>
               <HorizionLine />

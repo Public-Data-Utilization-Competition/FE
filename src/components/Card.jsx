@@ -12,7 +12,7 @@ const CardWrapper = styled.div`
   align-items: flex-end;
   max-width: 528px;
   min-height: 80px;
-  padding: 16px 12px;
+  padding: 16px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px #cccccc;

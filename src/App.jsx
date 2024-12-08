@@ -15,7 +15,7 @@ const AppWrapper = styled.div`
 `
 
 const Header = styled.h1`
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
   background-color: #3e3691;
   font-weight: bold;
@@ -27,8 +27,8 @@ const Header = styled.h1`
 `
 
 const HeaderImage = styled.img`
-  width: 40px;
-  height: 40px;
+  height: 22px;
+  margin-right: 8px;
   vertical-align: middle;
 `
 
@@ -123,7 +123,7 @@ const App = () => {
     <AppWrapper>
       <Header>
         <HeaderImage src={mainIcon} alt="main" />
-        한번에 찾는 전국 체육시설 스포츠강좌 리스트
+        : 한번에 찾는 전국 체육시설 스포츠강좌 리스트
       </Header>
       <SearchBar onSearch={handleSearch} resetFilterUI={resetFilterUI} />
       <Filter
