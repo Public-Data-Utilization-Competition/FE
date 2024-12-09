@@ -3,45 +3,82 @@ import DatePicker from 'react-datepicker'
 import styled from 'styled-components'
 import 'react-datepicker/dist/react-datepicker.css'
 
+// 브레이크포인트 설정
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+}
+
 const Container = styled.div`
   padding: 10px;
-  width: 600px;
-  gap: 10px; /* Title과 DatePicker 간 간격 */
+  width: 580px;
+  gap: 10px;
   z-index: 10;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 100%;
+  }
 `
 
 const Title = styled.div`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
-`
 
-const DatePickerRow = styled.div`
-  display: flex;
-  width: 560px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
 `
 
 const Text = styled.span`
   font-size: 16px;
   color: #333;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 14px;
+  }
+`
+
+const DatePickerRow = styled.div`
+  display: flex;
+  width: 550px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    gap: 10px;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
 `
 
 const DateInput = styled.div`
+  flex: 1; /* 각 입력 필드가 동일한 너비를 가짐 */
+  max-width: 200px; /* 최대 너비를 설정 */
+
   .react-datepicker-wrapper {
     width: 100%;
   }
 
   input {
     text-align: center;
-    width: 120px;
+    width: 100%;
     height: 30px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
     color: #333;
+
+    @media (max-width: ${breakpoints.mobile}) {
+      font-size: 12px;
+      height: 28px;
+    }
   }
 
   input::placeholder {
@@ -60,12 +97,12 @@ export const DatePick = ({ onDateChange, selectedDates }) => {
 
   const handleStartDateChange = (date) => {
     setStartDate(date)
-    onDateChange({ startDate: date, endDate }) // 부모 컴포넌트에 업데이트
+    onDateChange({ startDate: date, endDate })
   }
 
   const handleEndDateChange = (date) => {
     setEndDate(date)
-    onDateChange({ startDate, endDate: date }) // 부모 컴포넌트에 업데이트
+    onDateChange({ startDate, endDate: date })
   }
 
   return (

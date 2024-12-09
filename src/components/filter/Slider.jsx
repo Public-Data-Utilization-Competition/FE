@@ -1,12 +1,18 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
+// 브레이크포인트 설정
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+}
+
 const Container = styled.div`
   padding: 10px;
   height: 51px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   margin-bottom: 10px;
 `
 
@@ -14,11 +20,19 @@ const Title = styled.div`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 14px;
+  }
 `
 
 const SliderWrapper = styled.div`
   position: relative;
   width: 534px;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 100%;
+  }
 `
 
 const SliderTrack = styled.div`
@@ -42,6 +56,11 @@ const SliderValue = styled.div`
   position: absolute;
   font-size: 12px;
   margin-top: 20px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 10px;
+    margin-top: 16px;
+  }
 `
 
 const LeftValue = styled(SliderValue)`
@@ -62,6 +81,10 @@ const ThumbInput = styled.input.attrs({ type: 'range' })`
   -webkit-tap-highlight-color: transparent;
   z-index: 9;
 
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 100%;
+  }
+
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     background-color: #3e3691;
@@ -73,7 +96,11 @@ const ThumbInput = styled.input.attrs({ type: 'range' })`
     width: 18px;
     margin-top: 4px;
     pointer-events: all;
-    position: relative;
+
+    @media (max-width: ${breakpoints.mobile}) {
+      height: 14px;
+      width: 14px;
+    }
   }
 `
 

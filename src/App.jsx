@@ -7,13 +7,25 @@ import axios from 'axios'
 import SearchBar from './components/SearchBar'
 import mainIcon from './images/main_logo.png'
 
+// 브레이크포인트 설정
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+}
+
+// AppWrapper 스타일
 const AppWrapper = styled.div`
   box-sizing: border-box;
   max-width: 600px;
   margin: 0 auto;
   padding: 0 14px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0 8px; // 모바일에서 패딩을 줄임
+  }
 `
 
+// Header 스타일
 const Header = styled.h1`
   font-size: 16px;
   color: #fff;
@@ -23,13 +35,26 @@ const Header = styled.h1`
   height: 57px;
   margin: 0;
   line-height: 57px;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+  }
 `
 
+// HeaderImage 스타일
 const HeaderImage = styled.img`
   height: 22px;
   margin-right: 8px;
-  vertical-align: middle;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 18px; // 모바일에서 이미지 크기를 줄임
+    margin-right: 4px;
+  }
 `
 
 const App = () => {
@@ -65,29 +90,29 @@ const App = () => {
 
   // Filter data based on filter options
   const handleFilterApply = (filters) => {
-    let data = [...searchData] // 검색된 데이터에서 필터링
+    let data = [...searchData]
     if (filters.sido) data = data.filter((item) => filters.sido.includes(item.region))
     if (filters.min_price) data = data.filter((item) => item.progrm_prc >= filters.min_price)
     if (filters.max_price) data = data.filter((item) => item.progrm_prc <= filters.max_price)
     if (filters.progrm_begin_de) data = data.filter((item) => new Date(item.progrm_begin_de) >= new Date(filters.progrm_begin_de))
     if (filters.progrm_end_de) data = data.filter((item) => new Date(item.progrm_end_de) <= new Date(filters.progrm_end_de))
-    setFilteredData(data) // 필터링된 데이터를 상태에 업데이트
-    setCurrentPage(1) // 필터링 후 페이지 초기화
+    setFilteredData(data)
+    setCurrentPage(1)
   }
 
   // Filter data based on search input
   const handleSearch = (searchText) => {
-    const lowerCaseSearchText = searchText.toLowerCase() // 대소문자 무시
+    const lowerCaseSearchText = searchText.toLowerCase()
     const searchedData = allData.filter(
       (item) =>
-        item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) || // 프로그램 이름
-        item.category_name.toLowerCase().includes(lowerCaseSearchText) || // 카테고리 이름
-        item.facility_name.toLowerCase().includes(lowerCaseSearchText) || // 시설 이름
-        item.region.toLowerCase().includes(lowerCaseSearchText), // 지역 이름
+        item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) ||
+        item.category_name.toLowerCase().includes(lowerCaseSearchText) ||
+        item.facility_name.toLowerCase().includes(lowerCaseSearchText) ||
+        item.region.toLowerCase().includes(lowerCaseSearchText),
     )
-    setSearchData(searchedData) // 검색된 데이터를 상태에 업데이트
-    setFilteredData(searchedData) // 필터링된 데이터도 업데이트
-    setCurrentPage(1) // 검색 후 페이지 초기화
+    setSearchData(searchedData)
+    setFilteredData(searchedData)
+    setCurrentPage(1)
   }
 
   // Sort data based on the selected sort option
@@ -123,16 +148,11 @@ const App = () => {
     <AppWrapper>
       <Header>
         <HeaderImage src={mainIcon} alt="main" />
-        : 한번에 찾는 전국 체육시설 스포츠강좌 리스트
+        한번에 찾는 전국 체육시설 스포츠강좌 리스트
       </Header>
       <SearchBar onSearch={handleSearch} resetFilterUI={resetFilterUI} />
-      <Filter
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onFilterApply={(filters) => handleFilterApply(filters)}
-        setResetFilterUI={setResetFilterUI} // Set the resetFilterUI function
-      />
-      {getPaginatedData().map((item, index) => (
+      <Filter sortOption={sortOption} setSortOption={setSortOption} onFilterApply={handleFilterApply} setResetFilterUI={setResetFilterUI} />
+      {getPaginatedData().map((item) => (
         <Card
           key={item.id}
           logo={item.region_image}

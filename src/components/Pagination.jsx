@@ -1,10 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+// 브레이크포인트 설정
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+}
+
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin: 24px 0;
+  flex-wrap: wrap;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    margin: 16px 0;
+  }
 `
 
 const PageButton = styled.button`
@@ -15,10 +26,17 @@ const PageButton = styled.button`
   background-color: ${(props) => (props.$active ? '#3e3691' : '#f2f2f2')};
   color: ${(props) => (props.$active ? '#fff' : '#333')};
   cursor: pointer;
+  font-size: 14px;
 
   &:hover {
     background-color: #3e3691;
     color: #fff;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 6px 8px;
+    font-size: 12px;
+    margin: 0 3px;
   }
 `
 
@@ -30,6 +48,7 @@ const NavigationButton = styled.button`
   background-color: #f2f2f2;
   color: #333;
   cursor: pointer;
+  font-size: 14px;
 
   &:hover {
     background-color: #3e3691;
@@ -41,14 +60,25 @@ const NavigationButton = styled.button`
     color: #aaa;
     cursor: not-allowed;
   }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 6px 8px;
+    font-size: 12px;
+    margin: 0 3px;
+  }
 `
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const [currentGroup, setCurrentGroup] = useState(0)
   const itemsPerGroup = 10
 
-  const startPage = currentGroup * itemsPerGroup + 1
-  const endPage = Math.min(startPage + itemsPerGroup - 1, totalPages)
+  // 모바일 환경에서는 한 그룹에 5개씩만 표시
+  const itemsPerGroupMobile = 5
+
+  const isMobile = window.innerWidth <= parseInt(breakpoints.mobile)
+
+  const startPage = currentGroup * (isMobile ? itemsPerGroupMobile : itemsPerGroup) + 1
+  const endPage = Math.min(startPage + (isMobile ? itemsPerGroupMobile : itemsPerGroup) - 1, totalPages)
 
   const handleNextGroup = () => {
     if (endPage < totalPages) {

@@ -3,10 +3,14 @@ import MultiRangeSlider from './filter/Slider'
 import { Region } from './filter/Region'
 import { DatePick } from './filter/DatePick'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faRotateRight } from '@fortawesome/free-solid-svg-icons';
-import filterResetIcon from '../images/filter_reset.png'
-import filterOpenIcon from '../images/filter_button.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilter, faRotateRight } from '@fortawesome/free-solid-svg-icons'
+
+// 브레이크포인트 설정
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+}
 
 const Container = styled.div`
   display: flex;
@@ -15,13 +19,24 @@ const Container = styled.div`
   background-color: white;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 12px;
+  }
 `
 
 const ContainerHeader = styled.div`
   display: flex;
+  align-items: center;
 `
+
 const Title = styled.h3`
   margin-left: 10px;
+  font-size: 18px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 16px;
+  }
 `
 
 const ResetButton = styled.button`
@@ -35,15 +50,16 @@ const ResetButton = styled.button`
   &:hover {
     color: #5a4ebf;
   }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 12px;
+  }
 `
 
 const HorizionLine = styled.div`
   width: 100%;
-  text-align: center;
   border-bottom: 1px solid #f2f2f7;
-  line-height: 0.1em;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 `
 
 const FilterHeader = styled.div`
@@ -52,6 +68,11 @@ const FilterHeader = styled.div`
   align-items: center;
   margin: 16px 0;
   padding: 0 16px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0 8px;
+    margin: 12px 0;
+  }
 `
 
 const Dropdown = styled.select`
@@ -65,23 +86,30 @@ const Dropdown = styled.select`
     outline: none;
     border-color: #3e3691;
   }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 12px;
+    padding: 6px;
+  }
 `
 
 const FilterButton = styled.button`
-  display: inline-flex; // Flexbox 사용
-  align-items: center; // 세로 정렬을 중앙에 맞춤
-  gap: 8px; // 텍스트와 이미지 사이 간격
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 0;
   color: #6f6f6f;
   background-color: transparent;
   border: none;
   font-size: 14px;
   cursor: pointer;
-  text-decoration: none;
 
   &:hover {
     color: #5a4ebf;
-    text-decoration: none;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 12px;
   }
 `
 
@@ -98,18 +126,25 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   position: fixed;
   bottom: 0;
+  left: 50%; /* 왼쪽 기준으로 50% 위치에 배치 */
+  transform: translateX(-50%); /* 자기 자신 너비의 50%만큼 왼쪽으로 이동 */
   width: 100%;
   max-width: 600px;
   background-color: white;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px 8px 0 0;
   z-index: 10000;
+  box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 계산 */
+
+  @media (max-width: ${breakpoints.mobile}) {
+    border-radius: 12px 12px 0 0;
+  }
 `
 
 const SearchButton = styled.button`
-  width: 560px;
+  width: 100%;
   height: 54px;
-  margin: 8px auto 0;
+  margin-top: 8px;
   padding: 8px 16px;
   background-color: #3e3691;
   color: white;
@@ -122,6 +157,11 @@ const SearchButton = styled.button`
     background-color: #f2f2f2;
     color: #3e3691;
   }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 48px;
+    font-size: 12px;
+  }
 `
 
 const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) => {
@@ -131,26 +171,13 @@ const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) 
   const [dateRange, setDateRange] = useState({ startDate: null, endDate: null })
 
   useEffect(() => {
-    if (isModalOpen) {
-      setPriceRange({ min: 0, max: 1000000 })
-    }
-  }, [isModalOpen])
-
-  useEffect(() => {
-    setResetFilterUI(() => resetUI) // resetUI를 부모로 전달
+    setResetFilterUI(() => resetUI)
   }, [setResetFilterUI])
 
   const resetUI = () => {
     setRegion([])
     setPriceRange({ min: 0, max: 1000000 })
     setDateRange({ startDate: null, endDate: null })
-  }
-
-  const resetFilters = () => {
-    console.log('함수 실행')
-    setRegion([]) // 선택된 지역 초기화
-    setPriceRange({ min: 0, max: 1000000 }) // 선택된 가격 범위 초기화
-    setDateRange({ startDate: null, endDate: null }) // 선택된 날짜 범위 초기화
   }
 
   const applyFilters = () => {
@@ -174,7 +201,7 @@ const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) 
           <option value="capacity">모집인원순</option>
         </Dropdown>
         <FilterButton onClick={() => setIsModalOpen(true)}>
-          원하는 조건 결과만 필터링하기 <FontAwesomeIcon icon={faFilter} style={{ color: '#6F6F6F' }} />
+          원하는 조건 결과만 필터링하기 <FontAwesomeIcon icon={faFilter} />
         </FilterButton>
       </FilterHeader>
 
@@ -185,16 +212,16 @@ const Filter = ({ sortOption, setSortOption, onFilterApply, setResetFilterUI }) 
             <Container>
               <ContainerHeader>
                 <Title>필터</Title>
-                <ResetButton onClick={resetFilters}>
-                <FontAwesomeIcon icon={faRotateRight} style={{width: "20px", height: "20px", paddingRight: "6px"}} />
+                <ResetButton onClick={resetUI}>
+                  <FontAwesomeIcon icon={faRotateRight} />
                 </ResetButton>
               </ContainerHeader>
               <HorizionLine />
               <Region onRegionChange={(regions) => setRegion(regions)} selectedRegions={region} />
               <HorizionLine />
-              <MultiRangeSlider min={0} max={1000000} value={{ min: priceRange.min, max: priceRange.max }} onChange={(range) => setPriceRange(range)} />
+              <MultiRangeSlider min={0} max={1000000} value={priceRange} onChange={setPriceRange} />
               <HorizionLine />
-              <DatePick onDateChange={(dates) => setDateRange(dates)} selectedDates={dateRange} />
+              <DatePick onDateChange={setDateRange} selectedDates={dateRange} />
               <HorizionLine />
               <SearchButton onClick={applyFilters}>적용하기</SearchButton>
             </Container>
