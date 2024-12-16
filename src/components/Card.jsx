@@ -150,7 +150,7 @@ const Card = ({ logo, title, time, location, tag, price, capacity, link, target 
     <CardWrapper>
       {/* 왼쪽: 이미지 */}
       <ImageWrapper>
-        <Image src={logo || '/default-logo.png'} alt="logo" />
+        <Image src={logo || '/default-logo.png'} alt="logo" loading="lazy" />
       </ImageWrapper>
 
       {/* 중간: 텍스트 정보 */}
