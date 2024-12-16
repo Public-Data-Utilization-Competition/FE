@@ -83,6 +83,8 @@ export const Region = ({ onRegionChange, selectedRegions }) => {
     const updatedRegions = activeRegions.includes(region)
       ? activeRegions.filter((item) => item !== region) // 선택 해제
       : [...activeRegions, region] // 선택 추가
+
+    console.log('Updated Regions:', updatedRegions) // 디버깅용 로그
     setActiveRegions(updatedRegions)
     onRegionChange(updatedRegions) // 부모 컴포넌트로 상태 전달
   }

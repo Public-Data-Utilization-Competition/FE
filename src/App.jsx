@@ -105,31 +105,89 @@ const App = () => {
     }
   }
 
-  // Filter data based on filter options
-  const handleFilterApply = (filters) => {
-    let data = [...searchData]
-    if (filters.sido) data = data.filter((item) => filters.sido.includes(item.region))
-    if (filters.min_price) data = data.filter((item) => item.progrm_prc >= filters.min_price)
-    if (filters.max_price) data = data.filter((item) => item.progrm_prc <= filters.max_price)
-    if (filters.progrm_begin_de) data = data.filter((item) => new Date(item.progrm_begin_de) >= new Date(filters.progrm_begin_de))
-    if (filters.progrm_end_de) data = data.filter((item) => new Date(item.progrm_end_de) <= new Date(filters.progrm_end_de))
-    setFilteredData(data)
-    setCurrentPage(1)
+  const fetchAllData = async () => {
+    if (cache['all']) return cache['all']
+
+    setLoading(true)
+    try {
+      const allResults = []
+      let nextPage = 1
+      let hasNextPage = true
+
+      while (hasNextPage) {
+        const response = await axios.get(`https://dev.hufsthon.site/api/programs/?page=${nextPage}`)
+        allResults.push(...response.data.results)
+        nextPage += 1
+        hasNextPage = !!response.data.next // 다음 페이지가 있으면 true
+      }
+
+      cache['all'] = allResults
+      return allResults
+    } catch (error) {
+      console.error('Error fetching all data:', error)
+      return []
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleFilterApply = async (filters) => {
+    setLoading(true)
+
+    try {
+      const data = await fetchAllData()
+      let filtered = [...data]
+
+      if (filters.sido) {
+        filtered = filtered.filter((item) => filters.sido.includes(item.region))
+      }
+      if (filters.min_price) {
+        filtered = filtered.filter((item) => item.progrm_prc >= filters.min_price)
+      }
+      if (filters.max_price) {
+        filtered = filtered.filter((item) => item.progrm_prc <= filters.max_price)
+      }
+      if (filters.progrm_begin_de) {
+        filtered = filtered.filter((item) => new Date(item.progrm_begin_de) >= new Date(filters.progrm_begin_de))
+      }
+      if (filters.progrm_end_de) {
+        filtered = filtered.filter((item) => new Date(item.progrm_end_de) <= new Date(filters.progrm_end_de))
+      }
+
+      setAllData(data)
+      setSearchData(filtered)
+      setFilteredData(filtered)
+      setTotalPages(Math.ceil(filtered.length / itemsPerPage)) // totalPages 재계산
+      setCurrentGroup(0) // 페이지네이션 그룹 초기화
+      setCurrentPage(1)
+    } finally {
+      setLoading(false)
+    }
   }
 
   // Search functionality
-  const handleSearch = (searchText) => {
+  const handleSearch = async (searchText) => {
+    setLoading(true)
     const lowerCaseSearchText = searchText.toLowerCase()
-    const searchedData = allData.filter(
-      (item) =>
-        item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) ||
-        item.category_name.toLowerCase().includes(lowerCaseSearchText) ||
-        item.facility_name.toLowerCase().includes(lowerCaseSearchText) ||
-        item.region.toLowerCase().includes(lowerCaseSearchText),
-    )
-    setSearchData(searchedData)
-    setFilteredData(searchedData)
-    setCurrentPage(1)
+
+    try {
+      const data = await fetchAllData()
+      const searchedData = data.filter(
+        (item) =>
+          item.progrm_nm.toLowerCase().includes(lowerCaseSearchText) ||
+          item.category_name.toLowerCase().includes(lowerCaseSearchText) ||
+          item.facility_name.toLowerCase().includes(lowerCaseSearchText) ||
+          item.region.toLowerCase().includes(lowerCaseSearchText),
+      )
+
+      setAllData(data)
+      setSearchData(searchedData)
+      setFilteredData(searchedData)
+      setTotalPages(Math.ceil(searchedData.length / itemsPerPage)) // totalPages 재계산
+      setCurrentPage(1)
+    } finally {
+      setLoading(false)
+    }
   }
 
   // Handle page change
